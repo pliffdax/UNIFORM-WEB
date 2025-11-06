@@ -1,10 +1,13 @@
 import Navbar from '@/components/Navbar/Navbar';
+import Aside from '@/components/Aside/Aside';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
+    <>
       <Navbar />
+      <Aside />
       {children}
-    </div>
+      <main></main>
+    </>
   );
 }

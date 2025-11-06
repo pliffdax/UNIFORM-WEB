@@ -1,0 +1,35 @@
+.aside {
+    position: fixed;
+    left: 0;
+    top: 70px;
+    bottom: 0;
+    width: 250px;
+    background: rgba(10, 10, 10, 0.5);
+    border-right: 1px solid rgba(255, 255, 255, 0.95);
+    padding: 20px 0;
+    z-index: 100;
+  }
+  
+  .aside-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .aside-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 20px;
+    color: var(--foreground);
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  
+  .aside-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .aside-link span:first-child {
+    font-size: 20px;
+  }
