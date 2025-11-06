@@ -6,7 +6,7 @@
     height: 70px;
     background: transparent;
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid var(--border-color);
     z-index: 1000;
     justify-content: center;
 }
@@ -24,7 +24,6 @@
 .navbar-logo {
     font-size: 24px;
     font-weight: bold;
-    color: #ffffff;
     text-decoration: none;
 }
 
