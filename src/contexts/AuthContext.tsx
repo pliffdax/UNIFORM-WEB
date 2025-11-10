@@ -29,7 +29,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         console.error('Auth check failed:', error);
-        // Если токен невалиден - удаляем
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
       } finally {
