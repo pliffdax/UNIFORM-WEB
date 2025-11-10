@@ -13,21 +13,17 @@ interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-// Создаём контекст
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Провайдер (обёртка для app)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<CurrentUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // При загрузке проверяем есть ли токен
   useEffect(() => {
     async function checkAuth() {
       try {
         const token = localStorage.getItem('accessToken');
         if (token) {
-          // Если токен есть - загружаем данные пользователя
           const userData = await getCurrentUser();
           setUser(userData);
         }
@@ -44,12 +40,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth();
   }, []);
 
-  // Установить пользователя после логина
   const login = (userData: CurrentUser) => {
     setUser(userData);
   };
 
-  // Выйти
   const logout = async () => {
     await logoutService();
     setUser(null);
