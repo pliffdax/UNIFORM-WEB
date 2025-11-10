@@ -1,0 +1,72 @@
+const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL || 'http://localhost:4000';
+
+interface RequestConfig {
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  body?: any;
+  headers?: Record<string, string>;
+  requiresAuth?: boolean;
+}
+
+function getAccessToken() {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('accessToken');
+}
+
+export async function apiClient<T>(endpoint: string, config: RequestConfig = {}): Promise<T> {
+  const {
+    method = 'GET',
+    body,
+    headers = {},
+    requiresAuth = true, // по умолчанию требуется авторизация
+  } = config;
+
+  // Базовые заголовки
+  const defaultHeaders: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+
+  // Если требуется авторизация - добавляем токен
+  if (requiresAuth) {
+    const token = getAccessToken();
+    if (token) {
+      defaultHeaders['Authorization'] = `Bearer ${token}`;
+    }
+  }
+
+  // Конфигурация fetch
+  const fetchConfig: RequestInit = {
+    method,
+    headers: { ...defaultHeaders, ...headers },
+  };
+
+  // Добавляем body для POST/PUT/PATCH
+  if (body && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+    fetchConfig.body = JSON.stringify(body);
+  }
+
+  try {
+    const response = await fetch(`${API_GATEWAY_URL}${endpoint}`, fetchConfig);
+
+    // Если 401 - токен невалиден, редирект на логин
+    if (response.status === 401) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('accessToken');
+        window.location.href = '/login';
+      }
+      throw new Error('Unauthorized');
+    }
+
+    // Проверка на ошибки
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: 'Unknown error' }));
+      throw new Error(error.message || `HTTP Error: ${response.status}`);
+    }
+
+    // Парсим ответ
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('API Client Error:', error);
+    throw error;
+  }
+}
