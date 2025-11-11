@@ -2,62 +2,82 @@
 import React from 'react';
 import Link from 'next/link';
 
-// --- Шаг 1: Импорты для получения данных ---
-// Мы импортируем сервис и типы
-import { getAllForms } from '@/services/forms.service';
-import { Form } from '@/types/form.types';
+// --- ШаГ 1: ИЗМЕНЕННЫЕ ИМПОРТЫ ---
+// Импортируем наш НОВЫЙ сервис
+import { getAllQuestions } from '@/services/questions.service';
+// Импортируем тип Вопроса (из Q&A)
+import { Question } from '@/types/question.types';
 
-// Импортируем наш будущий клиентский компонент
-import FormListClientActions from './FormListClientActions';
-
-// --- Шаг 2: Получение данных на сервере ---
-// Компонент `async`, он ждет, пока данные загрузятся
-export default async function FormsListPage() {
-  let forms: Form[] = [];
+// --- Шаг 2: Получение Вопросов (не Форм) ---
+export default async function QuestionsListPage() {
+  let questions: Question[] = [];
   let error: string | null = null;
 
   try {
-    // Вызываем сервис напрямую. Это происходит на сервере.
-    forms = await getAllForms();
+    // Вызываем НОВЫЙ сервис
+    questions = await getAllQuestions();
   } catch (err) {
-    console.error('Failed to fetch forms:', err);
-    error = 'Не удалось загрузить список форм. Попробуйте обновить страницу.';
+    console.error('Failed to fetch questions:', err);
+    error = 'Не удалось загрузить список вопросов. Попробуйте обновить страницу.';
   }
 
-  // --- Шаг 3: Рендеринг ---
+  // --- Шаг 3: Рендеринг (стиль Q&A) ---
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      {/* Верхняя часть: Заголовок + Клиентский компонент для кнопки "Создать".
-        Мы передаем `error` в клиентский компонент, чтобы он мог
-        показать ошибку, если она произошла.
-      */}
-      <FormListClientActions initialError={error} />
+      {/* Заголовок (кнопка "Создать" теперь в Aside) */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Все вопросы</h1>
+      </div>
 
-      {/* Блок 4: Отображение списка форм */}
-      {!error && forms.length > 0 && (
-        <div className="space-y-4">
-          {forms.map(form => (
-            <Link
-              href={`/forms/${form.id}`} // Ссылка на страницу просмотра формы
-              key={form.id}
-              className="block p-4 border rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow"
+      {/* Вывод ошибки, если есть */}
+      {error && (
+        <div className="w-full p-4 text-center text-red-700 bg-red-100 rounded-lg">{error}</div>
+      )}
+
+      {/* Блок 4: Отображение списка Вопросов */}
+      {!error && questions.length > 0 && (
+        <div className="border border-gray-200 rounded-lg">
+          {questions.map((question, index) => (
+            <div
+              key={question.id}
+              className={`flex p-4 ${index > 0 ? 'border-t border-gray-200' : ''} hover:bg-gray-50`}
             >
-              <h2 className="text-xl font-semibold text-indigo-600">{form.title}</h2>
-              <p className="text-gray-600 mt-1">{form.description || 'Нет описания'}</p>
-              <div className="text-sm text-gray-400 mt-2">
-                ID: {form.id} | Создана: {new Date(form.createdAt).toLocaleDateString()}
+              {/* Левая часть: Статистика */}
+              <div className="flex flex-col items-end w-24 flex-shrink-0 mr-4 text-sm text-gray-500">
+                <span className="text-lg font-semibold">{question.likes}</span>
+                <span>лайков</span>
+                {/* <span className="mt-2">{question.answers?.length || 0}</span>
+                <span>ответов</span> */}
               </div>
-            </Link>
+
+              {/* Правая часть: Заголовок и инфо */}
+              <div className="flex-grow">
+                {/* Ссылка на страницу просмотра (мы ее тоже переделаем) */}
+                <Link
+                  href={`/forms/${question.id}`} // Мы переиспользуем /forms/[id]
+                  className="text-xl font-semibold text-indigo-600 hover:text-indigo-800"
+                >
+                  {question.questionName}
+                </Link>
+                <p className="text-gray-600 mt-1 line-clamp-2">{question.questionText}</p>
+                <div className="text-sm text-gray-400 mt-2">
+                  <span>Задан: {new Date(question.createdAt).toLocaleDateString()}</span>
+                  {/* (Тут можно добавить инфо о пользователе, если надо) */}
+                  {/* <span className="ml-2">by {question.user?.username}</span> */}
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       )}
 
-      {/* Блок 5: Состояние "Нет форм" */}
-      {!error && forms.length === 0 && (
+      {/* Блок 5: Состояние "Нет вопросов" */}
+      {!error && questions.length === 0 && (
         <div className="text-center text-gray-500 mt-10">
-          <h2 className="text-2xl">Формы не найдены</h2>
+          <h2 className="text-2xl">Вопросы не найдены</h2>
           <p className="mt-2">
-            Пока не создано ни одной формы. Нажмите &laquo;Создать&raquo;, чтобы начать.
+            Пока не создано ни одного вопроса. Нажмите &laquo;Создать вопрос&raquo; в меню, чтобы
+            начать.
           </p>
         </div>
       )}

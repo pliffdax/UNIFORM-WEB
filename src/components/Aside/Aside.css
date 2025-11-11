@@ -8,6 +8,9 @@
     border-right: 1px solid var(--border-color);
     padding: 20px 0;
     z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   
   .aside-nav {
@@ -33,3 +36,26 @@
   .aside-link span:first-child {
     font-size: 20px;
   }
+
+.aside-button-container {
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Стили для самой кнопки */
+.aside-button {
+    width: 100%;
+    padding: 12px;
+    background: var(--foreground);
+    color: var(--background);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: opacity 0.3s;
+}
+
+.aside-button:hover {
+    opacity: 0.8;
+}
