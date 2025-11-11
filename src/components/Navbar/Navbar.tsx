@@ -22,17 +22,17 @@ export default function Navbar() {
           <li>
             <Link href="/main">Главная</Link>
           </li>
+          <li>
+            <Link href="/forms/list">Вопросы</Link>
+          </li>
           {isAuthenticated && (
             <>
               {/* --- ⬇️ ВОТ ИЗМЕНЕНИЕ ⬇️ --- */}
               {/* Теперь ссылка "Вопросы" ведет на /forms/list,
                 которую мы переделаем в список вопросов
               */}
-              <li>
-                <Link href="/forms/list">Вопросы</Link>
-              </li>
-              {/* --- ⬆️ КОНЕЦ ИЗМЕНЕНИЯ ⬆️ --- */}
 
+              {/* --- ⬆️ КОНЕЦ ИЗМЕНЕНИЯ ⬆️ --- */}
               <li>
                 <Link href="/main/profile">Профиль</Link>
               </li>

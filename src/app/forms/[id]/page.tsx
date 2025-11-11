@@ -189,6 +189,7 @@ export default function QuestionDetailsPage() {
       </div>
 
       {/* --- Блок 3: Форма "Ваш Ответ" --- */}
+      {/* Эта форма видна ТОЛЬКО если `isAuthenticated` = true */}
       {isAuthenticated ? (
         <form onSubmit={handleAnswerSubmit} className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-4">Ваш Ответ</h2>
@@ -212,6 +213,8 @@ export default function QuestionDetailsPage() {
           </div>
         </form>
       ) : (
+        // --- ИЗМЕНЕНИЕ: ГОСТЕВОЙ РЕЖИМ ---
+        // Показываем это гостям
         <div className="text-center p-4 border-t">
           <p>
             <a href="/login" className="text-indigo-600 font-semibold">
