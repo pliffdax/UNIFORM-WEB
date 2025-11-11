@@ -6,8 +6,12 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { createForm } from '@/services/forms.service';
 
+// --- ИЗМЕНЕНИЕ: Импортируем "настоящие" DTO ---
+import { CreateFormDto } from '@/types/form.types';
+
 type QuestionType = 'single' | 'multiple' | 'text';
 
+// (Эти локальные UI-типы в порядке, они нужны для tempId)
 interface QuestionOptionUI {
   tempId: string;
   text: string;
@@ -21,17 +25,7 @@ interface QuestionUI {
   options: QuestionOptionUI[];
 }
 
-interface CreateFormWithQuestionsDto {
-  title: string;
-  description: string;
-  categoryId: number;
-  questions: Array<{
-    text: string;
-    type: QuestionType;
-    required: boolean;
-    options: Array<{ text: string }>;
-  }>;
-}
+// --- ИЗМЕНЕНИЕ: Локальный интерфейс CreateFormWithQuestionsDto УДАЛЕН ---
 
 const generateTempId = () => `temp_${Math.random().toString(36).substr(2, 9)}`;
 
@@ -122,20 +116,25 @@ export default function CreateFormPage() {
     setIsSubmitting(true);
     setError(null);
 
-    const createDto: CreateFormWithQuestionsDto = {
+    // --- ИЗМЕНЕНИЕ: Используем "настоящий" CreateFormDto и добавляем 'order' ---
+    const createDto: CreateFormDto = {
       title,
       description,
       categoryId,
-      questions: questions.map(q => ({
+      questions: questions.map((q, qIndex) => ({
+        // Добавили qIndex
         text: q.text,
         type: q.type,
         required: q.required,
+        order: qIndex + 1, // ⬅️⬅️ ВОТ ИСПРАВЛЕНИЕ
         options: q.options.map(opt => ({ text: opt.text })),
       })),
     };
 
     try {
       console.log('Отправка на бэкенд:', createDto);
+
+      // Теперь createDto имеет тип CreateFormDto, и createForm примет его без ошибки
       await createForm(createDto);
 
       router.push('/forms/list');
@@ -160,6 +159,7 @@ export default function CreateFormPage() {
     );
   }
 
+  // --- (Остальной JSX-код остается без изменений) ---
   return (
     <div className="container mx-auto p-4 max-w-3xl">
       <h1 className="text-3xl font-bold mb-6">Создание новой формы</h1>
