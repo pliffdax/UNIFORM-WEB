@@ -125,7 +125,8 @@ export default function CreateQuestionPage() {
           <label className="block text-sm font-medium text-gray-700">
             Категория (Теги)
             <p className="text-xs text-gray-500 mb-1">
-              Укажите категорию или теги (например: "web", "nextjs", "typescript")
+              Укажите категорию или теги (например: &laquo;web&raquo;, &laquo;nextjs&raquo;,
+              &laquo;typescript&raquo;)
             </p>
             <input
               type="text"
