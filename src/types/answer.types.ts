@@ -1,5 +1,4 @@
 import { User } from './auth.types';
-import { Question } from './question.types';
 
 export interface Answer {
   id: number;

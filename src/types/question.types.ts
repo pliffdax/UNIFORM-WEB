@@ -9,6 +9,7 @@ export interface Question {
   shareUrl: string | null;
   status: string;
   userid: string;
+  category: string;
   createdAt: string;
   updatedAt: string;
 }
