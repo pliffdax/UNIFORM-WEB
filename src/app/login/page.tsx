@@ -21,14 +21,30 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
 
+    console.log('=== НАЧАЛО ЛОГИНА ===');
+    console.log('Email:', email);
+    console.log('Password length:', password.length);
+
     try {
+      console.log('Отправляю запрос на логин...');
       const response = await login({ email, password });
+      console.log('✅ Успешный ответ:', response);
+
       setAuthUser(response.user);
       router.push('/main');
-    } catch (error) {
-      setError('Invalid email or password');
+    } catch (err) {
+      console.error('❌ ОШИБКА:', err);
+      console.error('❌ Тип ошибки:', typeof err);
+      console.error('❌ Детали:', JSON.stringify(err, null, 2));
+
+      // Более детальное сообщение об ошибке
+      const errorMessage = err instanceof Error ? err.message : 'Invalid email or password';
+
+      console.error('❌ Сообщение для пользователя:', errorMessage);
+      setError(errorMessage);
     } finally {
       setLoading(false);
+      console.log('=== КОНЕЦ ЛОГИНА ===');
     }
   };
 
