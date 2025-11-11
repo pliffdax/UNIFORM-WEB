@@ -28,6 +28,9 @@ export default function Navbar() {
                 <Link href="/main/questions">Вопросы</Link>
               </li>
               <li>
+                <Link href="/forms/list">Формы</Link>
+              </li>
+              <li>
                 <Link href="/main/profile">Профиль</Link>
               </li>
             </>
