@@ -57,6 +57,7 @@ export default function CreateFormPage() {
     setQuestions(questions.filter(q => q.tempId !== tempId));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateQuestion = (tempId: string, field: keyof QuestionUI, value: any) => {
     setQuestions(
       questions.map(q => {

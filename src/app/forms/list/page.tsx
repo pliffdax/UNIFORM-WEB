@@ -56,7 +56,9 @@ export default async function FormsListPage() {
       {!error && forms.length === 0 && (
         <div className="text-center text-gray-500 mt-10">
           <h2 className="text-2xl">Формы не найдены</h2>
-          <p className="mt-2">Пока не создано ни одной формы. Нажмите "Создать", чтобы начать.</p>
+          <p className="mt-2">
+            Пока не создано ни одной формы. Нажмите &laquo;Создать&raquo;, чтобы начать.
+          </p>
         </div>
       )}
     </div>
