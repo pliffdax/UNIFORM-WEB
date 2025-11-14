@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint .",
+    "lint:check": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
     "prepare": "husky",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -15,7 +19,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:mutation": "stryker run",
-    "test:all": "pnpm test && pnpm test:e2e"
+    "test:all": "pnpm test && pnpm test:e2e",
+    "ci": "pnpm format:check && pnpm lint:check && pnpm type-check && pnpm build && pnpm test:ci"
   },
   "dependencies": {
     "lucide-react": "^0.553.0",

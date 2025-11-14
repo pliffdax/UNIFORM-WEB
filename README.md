@@ -40,5 +40,50 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 This project uses [Tailwind CSS](https://tailwindcss.com/) for styling. To learn more about Tailwind CSS, check out the following resources:
 
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs) - learn about Tailwind CSS features and API.
-- [Tailwind CSS GitHub repository](
-- [Tailwind CSS GitHub repository](
+- [Tailwind CSS GitHub repository](https://github.com/tailwindlabs/tailwindcss)
+
+## CI/CD
+
+Проект настроен с использованием GitHub Actions для Continuous Integration и Continuous Deployment.
+
+### Continuous Integration (CI)
+
+При создании PR или коммита автоматически проверяется:
+
+- ✅ **Форматирование кода** (Prettier)
+- ✅ **Линтинг** (ESLint)
+- ✅ **Проверка типов** (TypeScript)
+- ✅ **Сборка проекта** (Next.js build)
+- ✅ **Тесты** (Jest + Playwright)
+- ✅ **Соответствие коммитов** (Conventional Commits)
+
+### Continuous Deployment (CD)
+
+При push в ветку `main` или `master`:
+
+- ✅ Автоматически проверяется что код собирается
+- ✅ Автоматически деплоится на Render (если настроен)
+
+### Настройка
+
+1. **Branch Protection**: См. [.github/BRANCH_PROTECTION.md](.github/BRANCH_PROTECTION.md)
+2. **Deployment**: См. [.github/DEPLOYMENT.md](.github/DEPLOYMENT.md)
+
+### Локальные команды
+
+```bash
+# Проверка форматирования
+pnpm format:check
+
+# Форматирование кода
+pnpm format
+
+# Проверка линтинга
+pnpm lint:check
+
+# Проверка типов
+pnpm type-check
+
+# Запуск всех проверок (как в CI)
+pnpm ci
+```
