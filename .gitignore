@@ -50,7 +50,6 @@ node_modules/
 
 # Stryker
 .stryker-tmp/
-reports/mutation/
 reports
 .swc
 
