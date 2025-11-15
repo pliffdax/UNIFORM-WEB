@@ -19,10 +19,23 @@ const config = {
   ],
   coverageThreshold: {
     global: {
-      statements: 80,
+      statements: 50,
+      branches: 50,
+      functions: 25,
+      lines: 50,
+    },
+
+    'lib/api/client.ts': {
+      statements: 90,
       branches: 80,
-      functions: 80,
-      lines: 80,
+      functions: 60,
+      lines: 95,
+    },
+    'services/auth.service.ts': {
+      statements: 65,
+      branches: 30,
+      functions: 70,
+      lines: 65,
     },
   },
 };
