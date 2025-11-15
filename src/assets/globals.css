@@ -1,5 +1,4 @@
-@import "../../node_modules/tailwindcss";
-
+@import '../../node_modules/tailwindcss';
 
 :root {
   --background: #ffffff;
@@ -27,7 +26,6 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-
 
 .container {
   max-width: 1320px;

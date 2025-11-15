@@ -121,4 +121,3 @@ jobs:
 
       - name: Validate commit messages
         uses: wagoid/commitlint-github-action@v6
-
