@@ -5,8 +5,10 @@
   "testRunner": "jest",
   "mutate": [
     "src/services/**/*.ts",
-    "src/lib/api/**/*.ts",
+    "src/lib/**/*.ts",
+    "src/contexts/**/*.tsx",
     "!src/**/*.test.ts",
+    "!src/**/*.test.tsx",
     "!src/**/*.spec.ts",
     "!src/**/__tests__/**"
   ],

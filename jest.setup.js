@@ -15,9 +15,7 @@ if (typeof global.BroadcastChannel === 'undefined') {
       this.name = name;
       this.listeners = [];
     }
-    postMessage(message) {
-      // Просто игнорируем в тестах
-    }
+    postMessage(message) {}
     addEventListener(type, listener) {
       this.listeners.push(listener);
     }
@@ -51,23 +49,29 @@ Object.defineProperty(window, 'localStorage', {
   writable: true,
 });
 
-// window.location mock
-delete window.location;
-window.location = {
-  href: '',
-  pathname: '/',
-  search: '',
-  hash: '',
-  assign: jest.fn(),
-  reload: jest.fn(),
-  replace: jest.fn(),
-};
+if (typeof window !== 'undefined' && window.location) {
+  try {
+    Object.defineProperty(window.location, 'assign', {
+      configurable: true,
+      writable: true,
+      value: jest.fn(function (url) {
+        this.href = url;
+      }),
+    });
+    Object.defineProperty(window.location, 'replace', {
+      configurable: true,
+      writable: true,
+      value: jest.fn(function (url) {
+        this.href = url;
+      }),
+    });
+  } catch (e) {}
+}
 
-// fetch mock (для unit тестов)
 global.fetch = jest.fn();
 
-// Подавить navigation warnings
 const originalError = console.error;
+
 beforeAll(() => {
   console.error = (...args) => {
     if (typeof args[0] === 'string' && args[0].includes('Not implemented: navigation')) {
