@@ -4,13 +4,17 @@ on:
   push:
     branches:
       - main
-      - master
-  workflow_dispatch: # Позволяет запускать вручную
+  workflow_dispatch:
 
 jobs:
   deploy:
     name: Deploy to Render
     runs-on: ubuntu-latest
+
+    env:
+      RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+      RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,20 +36,15 @@ jobs:
       - name: Build project
         run: pnpm build
 
-      # Вариант 1: Использование Render API (если настроены secrets)
       - name: Deploy to Render via API
-        if: ${{ secrets.RENDER_SERVICE_ID != '' && secrets.RENDER_API_KEY != '' }}
+        if: ${{ env.RENDER_SERVICE_ID != '' && env.RENDER_API_KEY != '' }}
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.RENDER_API_KEY }}
+          service-id: ${{ env.RENDER_SERVICE_ID }}
+          api-key: ${{ env.RENDER_API_KEY }}
 
-      # Вариант 2: Если Render настроен на автоматический деплой через webhook,
-      # этот workflow просто проверяет что код готов к деплою
-      # Render автоматически задеплоит при push в main/master
       - name: Deployment notification
-        if: ${{ secrets.RENDER_SERVICE_ID == '' || secrets.RENDER_API_KEY == '' }}
+        if: ${{ env.RENDER_SERVICE_ID == '' || env.RENDER_API_KEY == '' }}
         run: |
           echo "✅ Build successful. Render will auto-deploy if webhook is configured."
           echo "If you need manual deployment via API, configure RENDER_SERVICE_ID and RENDER_API_KEY secrets in GitHub Settings."
-
