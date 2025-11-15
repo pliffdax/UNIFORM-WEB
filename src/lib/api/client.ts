@@ -13,12 +13,7 @@ function getAccessToken() {
 }
 
 export async function apiClient<T>(endpoint: string, config: RequestConfig = {}): Promise<T> {
-  const {
-    method = 'GET',
-    body,
-    headers = {},
-    requiresAuth = true, // по умолчанию требуется авторизация
-  } = config;
+  const { method = 'GET', body, headers = {}, requiresAuth = true } = config;
 
   const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
@@ -44,9 +39,13 @@ export async function apiClient<T>(endpoint: string, config: RequestConfig = {})
     const response = await fetch(`${API_GATEWAY_URL}${endpoint}`, fetchConfig);
 
     if (response.status === 401) {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && typeof window.location !== 'undefined') {
         localStorage.removeItem('accessToken');
-        window.location.href = '/login';
+        if (typeof window.location.assign === 'function') {
+          window.location.assign('/login');
+        } else {
+          window.location.href = '/login';
+        }
       }
       throw new Error('Unauthorized');
     }

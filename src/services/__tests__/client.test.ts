@@ -56,22 +56,21 @@ describe('API Client', () => {
     expect(callArgs.headers.Authorization).toBeUndefined();
   });
 
-  it('should include body in POST request', async () => {
+  it('should include body for POST request', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
-      json: async () => ({ data: 'test' }),
+      json: async () => ({ success: true }),
     });
 
-    const body = { email: 'test@test.com', password: '123' };
+    const body = { name: 'test' };
 
     await apiClient('/test', {
       method: 'POST',
       body,
-      requiresAuth: false,
     });
 
     expect(global.fetch).toHaveBeenCalledWith(
-      expect.any(String),
+      expect.stringContaining('/test'),
       expect.objectContaining({
         method: 'POST',
         body: JSON.stringify(body),
@@ -79,7 +78,9 @@ describe('API Client', () => {
     );
   });
 
-  it('should throw error on 401 response', async () => {
+  it('should clear tokens and throw Unauthorized on 401 response', async () => {
+    localStorage.setItem('accessToken', 'test-token');
+
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
       status: 401,
@@ -87,15 +88,28 @@ describe('API Client', () => {
     });
 
     await expect(apiClient('/test')).rejects.toThrow('Unauthorized');
+    expect(localStorage.getItem('accessToken')).toBeNull();
   });
 
-  it('should throw error on failed response', async () => {
+  it('should throw error with server message on failed response', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
       status: 500,
       json: async () => ({ message: 'Server error' }),
     });
 
-    await expect(apiClient('/test')).rejects.toThrow();
+    await expect(apiClient('/test')).rejects.toThrow('Server error');
+  });
+
+  it('should fallback to "Unknown error" when response json fails', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 500,
+      json: async () => {
+        throw new Error('parse error');
+      },
+    });
+
+    await expect(apiClient('/test')).rejects.toThrow('Unknown error');
   });
 });
