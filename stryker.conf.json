@@ -21,5 +21,6 @@
   "reporters": ["html", "clear-text", "progress"],
   "htmlReporter": {
     "fileName": "reports/mutation/index.html"
-  }
+  },
+  "ignorePatterns": [".stryker-tmp/", "**/*.config.*"]
 }

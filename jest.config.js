@@ -11,12 +11,6 @@ const config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  collectCoverageFrom: [
-    'src/services/**/*.{js,jsx,ts,tsx}',
-    'src/lib/**/*.{js,jsx,ts,tsx}',
-    '!**/*.d.ts',
-    '!**/node_modules/**',
-  ],
   coverageThreshold: {
     global: {
       statements: 50,
@@ -25,13 +19,13 @@ const config = {
       lines: 50,
     },
 
-    'lib/api/client.ts': {
+    'src/lib/api/client.ts': {
       statements: 90,
       branches: 80,
       functions: 60,
       lines: 95,
     },
-    'services/auth.service.ts': {
+    'src/services/auth.service.ts': {
       statements: 65,
       branches: 30,
       functions: 70,
