@@ -34,11 +34,20 @@ export default function CreateQuestionPage() {
     setError(null);
 
     // Готовим DTO согласно question.types.ts
+    if (!user) {
+      setError('Ошибка: Пользователь не найден. Попробуйте войти снова.');
+      setIsSubmitting(false); // Не забываем остановить индикатор загрузки
+      return;
+    }
+
+    // Готовим DTO согласно question.types.ts
     const createDto: CreateQuestionDto = {
       questionName: title,
       questionText: body,
       category: category,
       status: 'active', // Устанавливаем статус по умолчанию
+      // --- 2. ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ ---
+      userid: user.id, // <-- Мы точно знаем, что user.id это 'string'
     };
 
     try {
