@@ -51,7 +51,6 @@ export async function getCurrentUser(): Promise<CurrentUser> {
   return apiClient<CurrentUser>('/auth/me');
 }
 
-// === ОБНОВИТЬ ТОКЕН ===
 export async function refreshAccessToken(): Promise<string> {
   const refreshToken = localStorage.getItem('refreshToken');
 

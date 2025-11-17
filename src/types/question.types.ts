@@ -24,6 +24,7 @@ export interface CreateQuestionDto {
   questionText: string;
   category: string;
   status: string;
+  userid: string;
 }
 
 export interface UpdateQuestionDto {
@@ -31,4 +32,5 @@ export interface UpdateQuestionDto {
   questionText?: string;
   category?: string;
   status?: string;
+  userid: string;
 }

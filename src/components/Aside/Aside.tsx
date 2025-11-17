@@ -1,21 +1,18 @@
-'use client'; // <-- ДОБАВЛЕНО: Превращает в Клиентский Компонент
+'use client';
 
 import './Aside.css';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; // <-- ДОБАВЛЕНО: Для навигации
-import { useAuth } from '@/contexts/AuthContext'; // <-- ДОБАВЛЕНО: Для проверки авторизации
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Aside() {
-  const { isAuthenticated, loading: authLoading } = useAuth(); // <-- ДОБАВЛЕНО
-  const router = useRouter(); // <-- ДОБАВЛЕНО
+  const { isAuthenticated, loading: authLoading } = useAuth();
+  const router = useRouter();
 
-  // --- ДОБАВЛЕНО: Логика нажатия на кнопку ---
   const handleCreateClick = () => {
     if (isAuthenticated) {
-      // Если вошел, идем на страницу создания (которую мы переделаем)
       router.push('/forms/create');
     } else {
-      // Если не вошел, кидаем на логин
       router.push('/login');
     }
   };
@@ -34,16 +31,13 @@ export default function Aside() {
         </Link>
       </nav>
 
-      {/* --- ⬇️ ВОТ ИЗМЕНЕНИЕ ⬇️ --- */}
-      {/* Не показываем кнопку, пока auth-контекст не загрузился */}
       {!authLoading && (
         <div className="aside-button-container">
           <button onClick={handleCreateClick} className="aside-button">
-            Создать вопрос
+            Створити питання
           </button>
         </div>
       )}
-      {/* --- ⬆️ КОНЕЦ ИЗМЕНЕНИЯ ⬆️ --- */}
     </aside>
   );
 }
