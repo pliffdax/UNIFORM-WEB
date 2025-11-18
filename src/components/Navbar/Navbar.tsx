@@ -20,21 +20,15 @@ export default function Navbar() {
 
         <ul className="navbar-menu">
           <li>
-            <Link href="/main">Главная</Link>
+            <Link href="/main">Головна</Link>
           </li>
           <li>
-            <Link href="/forms/list">Вопросы</Link>
+            <Link href="/forms/list">Питання</Link>
           </li>
           {isAuthenticated && (
             <>
-              {/* --- ⬇️ ВОТ ИЗМЕНЕНИЕ ⬇️ --- */}
-              {/* Теперь ссылка "Вопросы" ведет на /forms/list,
-                которую мы переделаем в список вопросов
-              */}
-
-              {/* --- ⬆️ КОНЕЦ ИЗМЕНЕНИЯ ⬆️ --- */}
               <li>
-                <Link href="/main/profile">Профиль</Link>
+                <Link href="/main/profile">Профіль</Link>
               </li>
             </>
           )}
@@ -43,14 +37,14 @@ export default function Navbar() {
         <div className="navbar-actions">
           {isAuthenticated ? (
             <>
-              <span style={{ marginRight: '15px' }}>Привет, {user?.username}!</span>
+              <span style={{ marginRight: '15px' }}>Привіт, {user?.username}!</span>
               <button onClick={logout} className="navbar-button">
-                Выйти
+                Вийти
               </button>
             </>
           ) : (
             <Link href="/login">
-              <button className="navbar-button">Войти</button>
+              <button className="navbar-button">Увійти</button>
             </Link>
           )}
         </div>

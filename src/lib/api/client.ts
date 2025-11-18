@@ -13,12 +13,7 @@ function getAccessToken() {
 }
 
 export async function apiClient<T>(endpoint: string, config: RequestConfig = {}): Promise<T> {
-  const {
-    method = 'GET',
-    body,
-    headers = {},
-    requiresAuth = true, // по умолчанию требуется авторизация
-  } = config;
+  const { method = 'GET', body, headers = {}, requiresAuth = true } = config;
 
   const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',

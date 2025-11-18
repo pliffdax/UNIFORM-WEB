@@ -3,129 +3,122 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-// --- Шаг 1: НОВЫЕ ИМПОРТЫ ---
 import { useAuth } from '@/contexts/AuthContext';
-// Используем НОВЫЙ сервис
 import { createQuestion } from '@/services/questions.service';
-// Используем НОВЫЕ типы
 import { CreateQuestionDto } from '@/types/question.types';
 
 export default function CreateQuestionPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
 
-  // --- Шаг 2: НОВЫЙ СТЕЙТ (для Q&A) ---
-  const [title, setTitle] = useState(''); // Это будет `questionName`
-  const [body, setBody] = useState(''); // Это будет `questionText`
-  const [category, setCategory] = useState(''); // Это будет `category` (или "теги")
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [category, setCategory] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // --- Шаг 3: НОВЫЙ ОБРАБОТЧИК ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !body.trim()) {
-      setError('Заголовок и текст вопроса не могут быть пустыми.');
+      setError('Заголовок і текст питання не можуть бути порожніми.');
       return;
     }
 
     setIsSubmitting(true);
     setError(null);
 
-    // Готовим DTO согласно question.types.ts
+    if (!user) {
+      setError('Помилка: Користувач не знайдений. Спробуйте увійти знову.');
+      setIsSubmitting(false);
+      return;
+    }
+
     const createDto: CreateQuestionDto = {
       questionName: title,
       questionText: body,
       category: category,
-      status: 'active', // Устанавливаем статус по умолчанию
+      status: 'active',
+      userid: user.id,
     };
 
     try {
-      console.log('Отправка на бэкенд:', createDto);
+      console.log('Відправка на бекенд:', createDto);
 
-      // Вызываем НОВЫЙ сервис
       await createQuestion(createDto);
 
-      // Отправляем на НОВЫЙ список вопросов
       router.push('/forms/list');
     } catch (err) {
       console.error(err);
-      setError('Не удалось создать вопрос. Проблема с API.');
+      setError('Не вдалося створити питання. Проблема з API.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // --- Шаг 4: ПРОВЕРКА АВТОРИЗАЦИИ ---
   if (authLoading) {
-    return <div>Загрузка...</div>;
+    return <div>Завантаження...</div>;
   }
 
-  // Только авторизованные пользователи могут создавать
   if (!user) {
     return (
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold">Доступ запрещен</h1>
+        <h1 className="text-2xl font-bold">Доступ заборонено</h1>
         <p>
-          Пожалуйста,{' '}
+          Будь ласка,{' '}
           <a href="/login" className="text-indigo-600">
-            войдите в систему
+            увійдіть в систему
           </a>
-          , чтобы задать вопрос.
+          , щоб задати питання.
         </p>
       </div>
     );
   }
 
-  // --- Шаг 5: НОВЫЙ JSX (Форма для Q&A) ---
   return (
     <div className="container mx-auto p-4 max-w-3xl">
-      <h1 className="text-3xl font-bold mb-6">Задать новый вопрос</h1>
+      <h1 className="text-3xl font-bold mb-6">Задати нове питання</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Блок 1: Заголовок вопроса */}
         <div className="p-4 border rounded-lg shadow-sm bg-white">
           <label className="block text-sm font-medium text-gray-700">
             Заголовок
             <p className="text-xs text-gray-500 mb-1">
-              Будьте конкретны и представьте, что задаете вопрос другому человеку.
+              Будьте конкретні і уявіть, що задаєте питання іншій людині.
             </p>
             <input
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-              placeholder="Например, 'Как исправить ошибку 404 в Next.js?'"
+              placeholder="Наприклад, «Як виправити помилку 404 в Next.js?'"
               required
             />
           </label>
         </div>
 
-        {/* Блок 2: Тело вопроса */}
         <div className="p-4 border rounded-lg shadow-sm bg-white">
           <label className="block text-sm font-medium text-gray-700">
-            Тело вопроса
+            Суть питання
             <p className="text-xs text-gray-500 mb-1">
-              Опишите все, что вы знаете, чтобы помочь людям ответить на ваш вопрос.
+              Опишіть все, що ви знаєте, щоб допомогти людям відповісти на ваше запитання.
             </p>
             <textarea
               value={body}
               onChange={e => setBody(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
               rows={10}
-              placeholder="Опишите вашу проблему подробнее..."
+              placeholder="Опишіть вашу проблему детальніше..."
               required
             />
           </label>
         </div>
 
-        {/* Блок 3: Категория/Теги */}
         <div className="p-4 border rounded-lg shadow-sm bg-white">
           <label className="block text-sm font-medium text-gray-700">
-            Категория (Теги)
+            Категорія (Теги)
             <p className="text-xs text-gray-500 mb-1">
-              Укажите категорию или теги (например: &laquo;web&raquo;, &laquo;nextjs&raquo;,
+              Вкажіть категорію або теги (наприклад: &laquo;web&raquo;, &laquo;nextjs&raquo;,
               &laquo;typescript&raquo;)
             </p>
             <input
@@ -138,14 +131,13 @@ export default function CreateQuestionPage() {
           </label>
         </div>
 
-        {/* Блок 4: Отправка */}
         <div className="flex items-center justify-between pt-4">
           <button
             type="submit"
             disabled={isSubmitting || authLoading}
             className="inline-flex justify-center py-2 px-4 border rounded-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
           >
-            {isSubmitting ? 'Публикация...' : 'Опубликовать вопрос'}
+            {isSubmitting ? 'Публікація...' : 'Опублікувати питання'}
           </button>
 
           {error && <p className="text-sm text-red-600">{error}</p>}

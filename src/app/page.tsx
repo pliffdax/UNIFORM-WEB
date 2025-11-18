@@ -14,18 +14,15 @@ export default function Home() {
     const button = buttonRef.current;
     const rect = button.getBoundingClientRect();
 
-    // Количество частиц зависит от интенсивности
     const particleCount = intensity === 1 ? 4 : 10;
 
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('div');
       particle.className = 'particle';
 
-      // Случайная стартовая позиция
       const startX = Math.random() * rect.width;
       const startY = Math.random() * rect.height;
 
-      // Угол и скорость
       const angle = Math.random() * Math.PI * 2;
       const baseVelocity = intensity === 1 ? 30 : 80;
       const randomVelocity = Math.random() * (intensity === 1 ? 50 : 120);
@@ -41,14 +38,12 @@ export default function Home() {
 
       button.appendChild(particle);
 
-      // Удаляем частицу после анимации
       setTimeout(() => {
         particle.remove();
       }, 1000);
     }
   };
 
-  // Постоянное создание частиц
   useEffect(() => {
     const interval = setInterval(() => {
       createParticles(isHovered ? 2 : 1);

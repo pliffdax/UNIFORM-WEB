@@ -4,7 +4,6 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { CurrentUser } from '@/types/auth.types';
 import { getCurrentUser, logout as logoutService } from '@/services/auth.service';
 
-// Тип контекста
 interface AuthContextType {
   user: CurrentUser | null;
   loading: boolean;
@@ -63,7 +62,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Хук для использования в компонентах
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
