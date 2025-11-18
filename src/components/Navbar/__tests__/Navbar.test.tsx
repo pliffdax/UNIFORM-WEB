@@ -18,7 +18,7 @@ describe('Navbar', () => {
 
     render(<Navbar />);
 
-    expect(screen.getByText(/войти|login/i)).toBeInTheDocument();
+    expect(screen.getByText(/увійти/i)).toBeInTheDocument();
   });
 
   it('should show username and logout when authenticated', () => {
@@ -41,7 +41,7 @@ describe('Navbar', () => {
     render(<Navbar />);
 
     expect(screen.getByText(/testuser/i)).toBeInTheDocument();
-    expect(screen.getByText(/выйти|logout/i)).toBeInTheDocument();
+    expect(screen.getByText(/вийти/i)).toBeInTheDocument();
   });
 
   it('should call logout on logout button click', () => {
@@ -63,7 +63,7 @@ describe('Navbar', () => {
 
     render(<Navbar />);
 
-    fireEvent.click(screen.getByText(/выйти|logout/i));
+    fireEvent.click(screen.getByText(/вийти/i));
 
     expect(mockLogout).toHaveBeenCalled();
   });
