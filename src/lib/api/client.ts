@@ -1,7 +1,7 @@
 const API_GATEWAY_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
 
 interface RequestConfig {
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
   body?: unknown;
   headers?: Record<string, string>;
   requiresAuth?: boolean;
