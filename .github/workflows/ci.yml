@@ -6,6 +6,9 @@ on:
   push:
     branches: ['*']
 
+env:
+  NEXT_PUBLIC_API_GATEWAY_URL: 'https://uniform-api-6nnh.onrender.com'
+
 jobs:
   lint-and-format:
     name: Lint & Format Check
