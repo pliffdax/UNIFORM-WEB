@@ -1,0 +1,60 @@
+{
+  "name": "uniform-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "prepare": "husky",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --maxWorkers=2",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:mutation": "stryker run",
+    "test:all": "pnpm test && pnpm test:e2e"
+  },
+  "dependencies": {
+    "lucide-react": "^0.553.0",
+    "next": "15.5.4",
+    "postcss": "^8.5.6",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "tailwindcss": "^4.1.13"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.56.1",
+    "@stryker-mutator/core": "^9.3.0",
+    "@stryker-mutator/jest-runner": "^9.3.0",
+    "@stryker-mutator/typescript-checker": "^9.3.0",
+    "@tailwindcss/postcss": "^4.1.13",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.4",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "lint-staged": "^16.2.0",
+    "msw": "^2.12.1",
+    "prettier": "^3.6.2",
+    "typescript": "^5",
+    "web-streams-polyfill": "^4.2.0",
+    "whatwg-fetch": "^3.6.20"
+  },
+  "lint-staged": {
+    "*.{ts,js,tsx,jsx,json,md}": "prettier --write"
+  },
+  "packageManager": "pnpm@10.16.0"
+}
